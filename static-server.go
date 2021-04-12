@@ -1,11 +1,11 @@
 package main
 
 import (
-				"fmt"
-				"log"
+	"fmt"
+	"log"
         "net/http"
         "time"
-				"github.com/gorilla/mux"
+	"github.com/gorilla/mux"
         "github.com/prometheus/client_golang/prometheus"
         "github.com/prometheus/client_golang/prometheus/promauto"
         "github.com/prometheus/client_golang/prometheus/promhttp"
@@ -14,8 +14,8 @@ import (
 func recordMetrics() {
         go func() {
                 for {
-                        opsProcessed.Inc()
-                        time.Sleep(2 * time.Second)
+			opsProcessed.Inc()
+			time.Sleep(2 * time.Second)
                 }
         }()
 }
@@ -29,12 +29,12 @@ var (
 
 func main() {
         recordMetrics()
-				router := mux.NewRouter()
-				router.Handle("/metrics", promhttp.Handler())
-				router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+		router := mux.NewRouter()
+		router.Handle("/metrics", promhttp.Handler())
+		router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
-				fmt.Println("Serving requests on port 5005")
-				err := http.ListenAndServe(":5005", router)
-				log.Fatal(err)
+		fmt.Println("Serving requests on port 5005")
+		err := http.ListenAndServe(":5005", router)
+		log.Fatal(err)
 }
 
